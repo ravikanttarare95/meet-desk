@@ -37,7 +37,11 @@ const createAvailability = async (req, res) => {
   }
 };
 
-const getAvailability = async (req, res) => {};
+const getAvailability = async (req, res) => {
+  const userId = req.user.id;
+  const availability = await Availability.find({ userId });
+  res.json(availability);
+};
 
 const deleteAvailability = async (req, res) => {};
 
