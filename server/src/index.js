@@ -4,6 +4,7 @@ dotenv.config();
 import cors from "cors";
 import connectDB from "./config/db.js";
 import authRoutes from "./routes/authRoutes.js";
+import availabilityRoutes from "./routes/availabilityRoutes.js";
 
 const app = express();
 
@@ -18,6 +19,7 @@ app.get("/", (_, res) => {
 });
 
 app.use("/auth", authRoutes);
+app.use("/availability", availabilityRoutes);
 
 const PORT = process.env.PORT || 8080;
 
