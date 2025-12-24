@@ -18,29 +18,44 @@ function Book() {
 
   const getSlots = async () => {
     if (!date) return;
-    const response = await axios.get(
-      `${import.meta.env.VITE_API_URL}/bookings/slots`,
-      {
-        params: { userId, date },
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_URL}/bookings/slots`,
+        {
+          params: { userId, date },
+        }
+      );
+      if (response) {
+        setSlots(response.data);
       }
-    );
-    if (response) {
-      setSlots(res.data);
+    } catch {
+      toast.error("Failed to load slots");
     }
   };
 
   const bookSlot = async () => {
-    await axios.post(`${import.meta.env.VITE_API_URL}/bookings`, {
-      userId,
-      date,
-      startTime: selectedSlot.start,
-      endTime: selectedSlot.end,
-      userName: user.name,
-      userEmail: user.email,
-      purpose: user.purpose,
-    });
+    if (!user.name || !user.email) {
+      toast.error("Name and email required");
+      return;
+    }
+    try {
+      await axios.post(`${import.meta.env.VITE_API_URL}/bookings`, {
+        userId,
+        date,
+        startTime: selectedSlot.start,
+        endTime: selectedSlot.end,
+        userName: user.name,
+        userEmail: user.email,
+        purpose: user.purpose,
+      });
 
-    toast.success("Booking confirmed");
+      toast.success("Booking confirmed");
+      setDate("");
+      setSelectedSlot(null);
+      setUser({ name: "", email: "", purpose: "" });
+    } catch (error) {
+      toast.error(error?.response?.data?.message || "Booking failed");
+    }
   };
 
   useEffect(() => {
@@ -49,12 +64,16 @@ function Book() {
 
   return (
     <div className="max-w-xl mx-auto mt-10 space-y-4">
-      <Input type="date" onInputChange={(e) => setDate(e.target.value)} />
+      <Input
+        type="date"
+        value={date}
+        onInputChange={(e) => setDate(e.target.value)}
+      />
 
       <div className="grid grid-cols-3 gap-2">
         {slots?.map((slot) => (
           <Button
-            btnTitle={`${slot.start - slot.end}`}
+            btnTitle={`${slot.start} - ${slot.end}`}
             btnVariant={"primary"}
             key={slot.start}
             onBtnClick={() => setSelectedSlot(slot)}
@@ -65,11 +84,11 @@ function Book() {
       {selectedSlot && (
         <>
           <Input
-            type="Name"
+            type="text"
             onInputChange={(e) => setUser({ ...user, name: e.target.value })}
           />
           <Input
-            type="Email"
+            type="email"
             onInputChange={(e) => setUser({ ...user, email: e.target.value })}
           />
           <Input

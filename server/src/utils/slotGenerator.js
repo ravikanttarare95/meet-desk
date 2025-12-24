@@ -1,4 +1,4 @@
-export const generateSlots = (startTime, endTime, duration) => {
+const generateSlots = (startTime, endTime, duration) => {
   const slots = [];
 
   let [startHour, startMinute] = startTime.split(":").map(Number);
@@ -25,3 +25,4 @@ export const generateSlots = (startTime, endTime, duration) => {
 
   return slots;
 };
+export default generateSlots;
