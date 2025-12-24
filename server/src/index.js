@@ -3,8 +3,10 @@ import dotenv from "dotenv";
 dotenv.config();
 import cors from "cors";
 import connectDB from "./config/db.js";
+
 import authRoutes from "./routes/authRoutes.js";
 import availabilityRoutes from "./routes/availabilityRoutes.js";
+import bookingRoutes from "./routes/bookingRoutes.js";
 
 const app = express();
 
@@ -20,6 +22,7 @@ app.get("/", (_, res) => {
 
 app.use("/auth", authRoutes);
 app.use("/availability", availabilityRoutes);
+app.use("/bookings", bookingRoutes);
 
 const PORT = process.env.PORT || 8080;
 
