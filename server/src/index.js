@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 dotenv.config();
 import cors from "cors";
 import connectDB from "./config/db.js";
+import authRoutes from "./routes/authRoutes.js";
 
 const app = express();
 
@@ -15,6 +16,8 @@ app.get("/", (_, res) => {
     message: "Server is healthy",
   });
 });
+
+app.use("/auth", authRoutes);
 
 const PORT = process.env.PORT || 8080;
 
