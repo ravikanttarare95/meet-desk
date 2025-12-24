@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Button from "./../form_components/Button.jsx";
 import Input from "./../form_components/Input.jsx";
 import Label from "./../form_components/Label.jsx";
@@ -13,7 +13,7 @@ function LoginForm() {
   });
   const navigate = useNavigate();
 
-  let isDisabled;
+  const [isDisabled, setIsDisabled] = useState(true);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -62,8 +62,13 @@ function LoginForm() {
         }
       );
     }
-    isDisabled = !loginData?.email || !loginData?.password;
   };
+
+  useEffect(() => {
+    const isValid = loginData?.email.trim() && loginData?.password.trim();
+
+    setIsDisabled(!isValid);
+  }, [loginData]);
 
   return (
     <form className="space-y-5" onSubmit={handleLoginSubmit}>
@@ -102,7 +107,7 @@ function LoginForm() {
       <div className="space-y-3 pt-2">
         <Button
           type="submit"
-          btnTitle={isDisabled ? "Enter email & password" : "Login"}
+          btnTitle={"Login"}
           btnVariant="primary"
           size="md"
           isDisabled={isDisabled}

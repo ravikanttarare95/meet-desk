@@ -4,12 +4,18 @@ import User from "./../models/User.js";
 
 const adminSignup = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, password, confirmPassword } = req.body;
 
-    if (!name || !email || !password) {
+    if (!name || !email || !password || !confirmPassword) {
       return res.status(400).json({ message: "All fields required" });
     }
 
+    if (password !== confirmPassword) {
+      return res.status(400).json({
+        success: false,
+        message: "Password did not match",
+      });
+    }
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res

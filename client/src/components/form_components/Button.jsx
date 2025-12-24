@@ -26,9 +26,7 @@ function Button({
   return (
     <button
       type={type}
-      className={`${customStyle} ${sizeClass} ${variantClass} ${
-        isDisabled ? "bg-slate-200 text-slate-900 hover:bg-slate-300" : ""
-      } cursor-pointer transition-all duration-300`}
+      className={`${customStyle} ${sizeClass} ${variantClass} cursor-pointer transition-all duration-300`}
       onClick={onBtnClick}
       disabled={isDisabled}
     >
