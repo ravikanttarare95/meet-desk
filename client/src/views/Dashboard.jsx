@@ -29,14 +29,6 @@ function Dashboard() {
             View & manage appointments
           </p>
         </Link>
-
-        <Link
-          to="/admin/calendar"
-          className="border rounded-lg p-6 hover:bg-gray-50 transition"
-        >
-          <h2 className="font-semibold text-lg text-gray-700">Calendar</h2>
-          <p className="text-sm text-gray-500 mt-2">Visual booking overview</p>
-        </Link>
       </div>
     </div>
   );

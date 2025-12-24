@@ -40,10 +40,6 @@ function App() {
             </ProtectedRoute>
           }
         />
-        <Route
-          path="/admin/calendar"
-          element={<ProtectedRoute>{/* <AdminCalendar /> */}</ProtectedRoute>}
-        />
         <Route path="*" element={<NotFound />} />
       </Routes>
       <Toaster />
