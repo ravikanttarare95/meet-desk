@@ -7,6 +7,7 @@ import connectDB from "./config/db.js";
 import authRoutes from "./routes/authRoutes.js";
 import availabilityRoutes from "./routes/availabilityRoutes.js";
 import bookingRoutes from "./routes/bookingRoutes.js";
+import adminRoutes from "./routes/AdminRoutes.js";
 
 const app = express();
 
@@ -23,6 +24,7 @@ app.get("/", (_, res) => {
 app.use("/auth", authRoutes);
 app.use("/availability", availabilityRoutes);
 app.use("/bookings", bookingRoutes);
+app.use("/admin", adminRoutes);
 
 const PORT = process.env.PORT || 8080;
 
