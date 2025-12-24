@@ -9,6 +9,8 @@ const Input = ({
   onInputChange,
   value,
   customStyle,
+  min,
+  max,
 }) => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const inputType = type === "password" && isPasswordVisible ? "text" : type;
@@ -21,8 +23,10 @@ const Input = ({
         name={name}
         placeholder={placeholder}
         value={value}
-        className={`${customStyle} w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-violet-400 focus:border-transparent transition`}
+        className={`${customStyle} w-full px-4 py-2.5 rounded-lg border border-gray-400 focus:outline-none focus:ring-2 focus:ring-violet-400 focus:border-transparent transition`}
         onChange={onInputChange}
+        min={min}
+        max={max}
       />
       {type === "password" && (
         <div

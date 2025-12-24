@@ -14,7 +14,7 @@ function Home() {
         btnTitle={"Book Now"}
         btnVariant={"primary"}
         onBtnClick={() => {
-          navigate(`/book/${user.id}`);
+          navigate(`/book/${user?.id}`);
         }}
       />
     </div>

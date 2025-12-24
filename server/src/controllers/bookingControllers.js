@@ -5,13 +5,15 @@ import generateSlots from "./../utils/slotGenerator.js";
 const getAvailableSlots = async (req, res) => {
   try {
     const { userId, date } = req.query;
-    console.log("Incoming query:", req.query);
+    console.log("Incoming query:", req.query); ///////
 
     const availability = await Availability.findOne({
       userId,
       date,
       isBlocked: false,
     });
+
+    console.log("availability:", availability);
 
     if (!availability) {
       return res.json([]);

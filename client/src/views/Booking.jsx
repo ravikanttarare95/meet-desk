@@ -25,8 +25,9 @@ function Book() {
           params: { userId, date },
         }
       );
-      if (response) {
-        setSlots(response.data);
+      if (response?.data) {
+        setSlots((prev) => [...prev, response?.data]);
+        console.log(response?.data);
       }
     } catch {
       toast.error("Failed to load slots");
@@ -42,11 +43,11 @@ function Book() {
       await axios.post(`${import.meta.env.VITE_API_URL}/bookings`, {
         userId,
         date,
-        startTime: selectedSlot.start,
-        endTime: selectedSlot.end,
-        userName: user.name,
-        userEmail: user.email,
-        purpose: user.purpose,
+        startTime: selectedSlot?.start,
+        endTime: selectedSlot?.end,
+        userName: user?.name,
+        userEmail: user?.email,
+        purpose: user?.purpose,
       });
 
       toast.success("Booking confirmed");
@@ -71,13 +72,14 @@ function Book() {
       />
 
       <div className="grid grid-cols-3 gap-2">
-        {slots?.map((slot) => (
-          <Button
-            btnTitle={`${slot.start} - ${slot.end}`}
-            btnVariant={"primary"}
-            key={slot.start}
-            onBtnClick={() => setSelectedSlot(slot)}
-          />
+        {slots?.map((slot, index) => (
+          <div key={index}>
+            <Button
+              btnTitle={`${slot?.start} - ${slot?.end}`}
+              btnVariant={"primary"}
+              onBtnClick={() => setSelectedSlot(slot)}
+            />
+          </div>
         ))}
       </div>
 
