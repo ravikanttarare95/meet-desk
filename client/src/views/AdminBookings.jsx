@@ -1,26 +1,29 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Button from "./../components/form_components/Button.jsx";
+import Input from "./../components/form_components/Input.jsx";
 import toast from "react-hot-toast";
 
-const AdminBookings = () => {
+const API_URL = import.meta.env.VITE_API_URL;
+
+function AdminBookings() {
+  const token = localStorage.getItem("token");
+  const [date, setDate] = useState("");
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(false);
-
-  const token = localStorage.getItem("token");
 
   const fetchBookings = async () => {
     try {
       setLoading(true);
-      const res = await axios.get(
-        `${import.meta.env.VITE_API_URL}/admin/bookings`,
+      const response = await axios.get(
+        `${API_URL}/admin/bookings?date=${date ? { date } : {}}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         }
       );
-      setBookings(res.data);
+      setBookings(response.data.data);
     } catch (error) {
       toast.error("Failed to fetch bookings");
     } finally {
@@ -31,7 +34,7 @@ const AdminBookings = () => {
   const cancelBooking = async (id) => {
     try {
       await axios.patch(
-        `${import.meta.env.VITE_API_URL}/admin/bookings/${id}/cancel`,
+        `${API_URL}/admin/bookings/${id}/cancel`,
         {},
         {
           headers: {
@@ -54,50 +57,76 @@ const AdminBookings = () => {
 
   return (
     <div className="max-w-6xl mx-auto mt-10">
-      <h2 className="text-2xl font-semibold mb-4">Appointments</h2>
+      <h1 className="text-2xl font-bold text-violet-700">
+        Admin Bookings Dashboard
+      </h1>
 
-      {bookings.length === 0 ? (
+      {/* Filter */}
+      <div className="flex gap-4 items-end">
+        <Input
+          type="date"
+          value={date}
+          onInputChange={(e) => setDate(e.target.value)}
+        />
+
+        <Button
+          btnVariant="primary"
+          btnTitle="Filter"
+          onBtnClick={fetchBookings}
+        />
+      </div>
+
+      {/* Content */}
+      {loading && <p className="text-gray-500">Loading...</p>}
+
+      {!loading && bookings.length === 0 && (
         <p className="text-gray-500">No bookings found</p>
-      ) : (
-        <table className="w-full border">
-          <thead className="bg-gray-100">
-            <tr>
-              <th className="p-2 text-left">Date</th>
-              <th className="p-2 text-left">Time</th>
-              <th className="p-2 text-left">User</th>
-              <th className="p-2 text-left">Email</th>
-              <th className="p-2 text-left">Purpose</th>
-              <th className="p-2 text-left">Status</th>
-              <th className="p-2 text-left">Action</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {bookings.map((b) => (
-              <tr key={b._id} className="border-t">
-                <td className="p-2">{b.date}</td>
-                <td className="p-2">
-                  {b.startTime} – {b.endTime}
-                </td>
-                <td className="p-2">{b.userName}</td>
-                <td className="p-2">{b.userEmail}</td>
-                <td className="p-2">{b.purpose || "-"}</td>
-                <td className="p-2">{b.status}</td>
-                <td className="p-2">
-                  {b.status === "BOOKED" && (
-                    <Button
-                      btnTitle={"Cancel"}
-                      btnVariant={"secondary"}
-                      onBtnClick={() => cancelBooking(b._id)}
-                    />
-                  )}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
       )}
+
+      <div className="space-y-4">
+        {bookings.map((booking) => (
+          <div
+            key={booking._id}
+            className="border border-gray-200 rounded-lg p-4 flex justify-between items-center"
+          >
+            <div className="space-y-1">
+              <p className="font-semibold text-gray-800">
+                {booking.userName} ({booking.userEmail})
+              </p>
+
+              <p className="text-sm text-gray-600">
+                {booking.date} • {booking.startTime} - {booking.endTime}
+              </p>
+
+              {booking.purpose && (
+                <p className="text-sm text-gray-500">
+                  Purpose: {booking.purpose}
+                </p>
+              )}
+
+              <span
+                className={`text-xs font-medium px-2 py-1 rounded ${
+                  booking.status === "cancelled"
+                    ? "bg-gray-200 text-gray-600"
+                    : "bg-green-100 text-green-700"
+                }`}
+              >
+                {booking.status}
+              </span>
+            </div>
+
+            {booking.status === "confirmed" && (
+              <Button
+                btnVariant="secondary"
+                btnTitle="Cancel"
+                onBtnClick={() => cancelBooking(booking._id)}
+              />
+            )}
+          </div>
+        ))}
+      </div>
     </div>
   );
-};
+}
+
 export default AdminBookings;

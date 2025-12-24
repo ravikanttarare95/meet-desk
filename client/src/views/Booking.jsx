@@ -5,6 +5,7 @@ import Input from "./../components/form_components/Input.jsx";
 import Button from "./../components/form_components/Button.jsx";
 import toast from "react-hot-toast";
 
+const API_URL = import.meta.env.VITE_API_URL;
 function Book() {
   const { userId } = useParams();
   const [date, setDate] = useState("");
@@ -19,12 +20,9 @@ function Book() {
   const getSlots = async () => {
     if (!date) return;
     try {
-      const response = await axios.get(
-        `${import.meta.env.VITE_API_URL}/bookings/slots`,
-        {
-          params: { userId, date },
-        }
-      );
+      const response = await axios.get(`${API_URL}/bookings/slots`, {
+        params: { userId, date },
+      });
       if (response?.data) {
         setSlots((prev) => [...prev, response?.data]);
         console.log(response?.data);
@@ -39,15 +37,18 @@ function Book() {
       toast.error("Name and email required");
       return;
     }
+
+    if (!selectedSlot) return;
+
     try {
-      await axios.post(`${import.meta.env.VITE_API_URL}/bookings`, {
+      await axios.post(`${API_URL}/bookings`, {
         userId,
         date,
-        startTime: selectedSlot?.start,
-        endTime: selectedSlot?.end,
-        userName: user?.name,
-        userEmail: user?.email,
-        purpose: user?.purpose,
+        startTime: selectedSlot.start,
+        endTime: selectedSlot.end,
+        userName: user.name,
+        userEmail: user.email,
+        purpose: user.purpose,
       });
 
       toast.success("Booking confirmed");
@@ -64,33 +65,39 @@ function Book() {
   }, [date, userId]);
 
   return (
-    <div className="max-w-xl mx-auto mt-10 space-y-4">
+    <div className="max-w-xl mx-auto mt-10 space-y-5">
       <Input
         type="date"
         value={date}
         onInputChange={(e) => setDate(e.target.value)}
       />
-
-      <div className="grid grid-cols-3 gap-2">
-        {slots?.map((slot, index) => (
-          <div key={index}>
+      {slots.length > 0 && (
+        <div className="grid grid-cols-3 gap-2">
+          {slots?.map((slot, index) => (
+            // <div key={index}>
             <Button
-              btnTitle={`${slot?.start} - ${slot?.end}`}
-              btnVariant={"primary"}
+              key={`${slot.start}-${slot.end}`}
+              btnTitle={`${slot.start} - ${slot.end}`}
+              btnVariant={
+                selectedSlot?.start === slot.start ? "primary" : "secondary"
+              }
               onBtnClick={() => setSelectedSlot(slot)}
             />
-          </div>
-        ))}
-      </div>
+            // </div>
+          ))}
+        </div>
+      )}
 
       {selectedSlot && (
-        <>
+        <div className="space-y-3">
           <Input
             type="text"
+            placeholder="Your Name"
             onInputChange={(e) => setUser({ ...user, name: e.target.value })}
           />
           <Input
             type="email"
+            placeholder="Email"
             onInputChange={(e) => setUser({ ...user, email: e.target.value })}
           />
           <Input
@@ -104,7 +111,7 @@ function Book() {
             btnTitle={"Confirm Booking"}
             onBtnClick={bookSlot}
           />
-        </>
+        </div>
       )}
     </div>
   );
