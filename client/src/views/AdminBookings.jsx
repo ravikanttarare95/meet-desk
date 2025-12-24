@@ -8,6 +8,7 @@ const API_URL = import.meta.env.VITE_API_URL;
 
 function AdminBookings() {
   const token = localStorage.getItem("token");
+
   const [date, setDate] = useState("");
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -16,15 +17,13 @@ function AdminBookings() {
     try {
       setLoading(true);
       const response = await axios.get(
-        `${API_URL}/admin/bookings?date=${date ? { date } : {}}`,
+        `${API_URL}/admin/bookings${date ? `?date=${date}` : ""}`,
         {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          headers: { Authorization: `Bearer ${token}` },
         }
       );
       setBookings(response.data.data);
-    } catch (error) {
+    } catch {
       toast.error("Failed to fetch bookings");
     } finally {
       setLoading(false);
@@ -37,14 +36,12 @@ function AdminBookings() {
         `${API_URL}/admin/bookings/${id}/cancel`,
         {},
         {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          headers: { Authorization: `Bearer ${token}` },
         }
       );
       toast.success("Booking cancelled");
       fetchBookings();
-    } catch (error) {
+    } catch {
       toast.error("Failed to cancel booking");
     }
   };
@@ -53,77 +50,96 @@ function AdminBookings() {
     fetchBookings();
   }, []);
 
-  if (loading) return <div className="text-center mt-10">Loading...</div>;
-
   return (
-    <div className="max-w-6xl mx-auto mt-10">
-      <h1 className="text-2xl font-bold text-violet-700">
-        Admin Bookings Dashboard
-      </h1>
+    <div className="max-w-7xl mx-auto px-4 py-8">
+      <div className="mb-6">
+        <h1 className="text-3xl font-bold text-violet-700">
+          Bookings Management
+        </h1>
+        <p className="text-gray-500 text-sm">
+          View and manage all appointment bookings
+        </p>
+      </div>
 
-      {/* Filter */}
-      <div className="flex gap-4 items-end">
-        <Input
-          type="date"
-          value={date}
-          onInputChange={(e) => setDate(e.target.value)}
-        />
+      <div className="bg-white rounded-xl border p-4 mb-6 flex flex-col sm:flex-row gap-4 items-end">
+        <div>
+          <label className="text-sm font-medium text-gray-600">
+            Filter by date
+          </label>
+          <Input
+            type="date"
+            value={date}
+            onInputChange={(e) => setDate(e.target.value)}
+          />
+        </div>
 
         <Button
           btnVariant="primary"
-          btnTitle="Filter"
+          btnTitle="Apply Filter"
           onBtnClick={fetchBookings}
         />
       </div>
 
-      {/* Content */}
-      {loading && <p className="text-gray-500">Loading...</p>}
-
-      {!loading && bookings.length === 0 && (
-        <p className="text-gray-500">No bookings found</p>
+      {loading && (
+        <p className="text-center text-gray-500 mt-10">Loading bookings...</p>
       )}
 
-      <div className="space-y-4">
-        {bookings.map((booking) => (
-          <div
-            key={booking._id}
-            className="border border-gray-200 rounded-lg p-4 flex justify-between items-center"
-          >
-            <div className="space-y-1">
-              <p className="font-semibold text-gray-800">
-                {booking.userName} ({booking.userEmail})
-              </p>
+      {!loading && bookings.length === 0 && (
+        <p className="text-center text-gray-500 mt-10">No bookings found</p>
+      )}
 
-              <p className="text-sm text-gray-600">
-                {booking.date} • {booking.startTime} - {booking.endTime}
-              </p>
+      <div className="grid gap-4">
+        {bookings.map((booking) => {
+          const isCancelled = booking.status === "cancelled";
 
-              {booking.purpose && (
-                <p className="text-sm text-gray-500">
-                  Purpose: {booking.purpose}
+          return (
+            <div
+              key={booking._id}
+              className="bg-white rounded-xl border hover:shadow-sm transition p-5 flex flex-col md:flex-row md:items-center md:justify-between gap-4"
+            >
+              <div className="space-y-1">
+                <p className="text-lg font-semibold text-gray-800">
+                  {booking.userName}
                 </p>
-              )}
 
-              <span
-                className={`text-xs font-medium px-2 py-1 rounded ${
-                  booking.status === "cancelled"
-                    ? "bg-gray-200 text-gray-600"
-                    : "bg-green-100 text-green-700"
-                }`}
-              >
-                {booking.status}
-              </span>
+                <p className="text-sm text-gray-600">{booking.userEmail}</p>
+
+                <p className="text-sm text-gray-700">
+                  {booking.date} •{" "}
+                  <span className="font-medium">
+                    {booking.startTime} – {booking.endTime}
+                  </span>
+                </p>
+
+                {booking.purpose && (
+                  <p className="text-sm text-gray-500">
+                    Purpose: {booking.purpose}
+                  </p>
+                )}
+              </div>
+
+              <div className="flex items-center gap-4">
+                <span
+                  className={`text-xs font-semibold px-3 py-1 rounded-full ${
+                    isCancelled
+                      ? "bg-gray-200 text-gray-600"
+                      : "bg-green-100 text-green-700"
+                  }`}
+                >
+                  {booking.status}
+                </span>
+
+                {!isCancelled && (
+                  <Button
+                    btnVariant="secondary"
+                    btnTitle="Cancel"
+                    onBtnClick={() => cancelBooking(booking._id)}
+                  />
+                )}
+              </div>
             </div>
-
-            {booking.status === "confirmed" && (
-              <Button
-                btnVariant="secondary"
-                btnTitle="Cancel"
-                onBtnClick={() => cancelBooking(booking._id)}
-              />
-            )}
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );

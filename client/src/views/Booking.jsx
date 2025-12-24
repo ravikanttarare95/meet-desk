@@ -74,7 +74,6 @@ function Book() {
       {slots.length > 0 && (
         <div className="grid grid-cols-3 gap-2">
           {slots?.map((slot, index) => (
-            // <div key={index}>
             <Button
               key={`${slot.start}-${slot.end}`}
               btnTitle={`${slot.start} - ${slot.end}`}
@@ -83,7 +82,6 @@ function Book() {
               }
               onBtnClick={() => setSelectedSlot(slot)}
             />
-            // </div>
           ))}
         </div>
       )}
