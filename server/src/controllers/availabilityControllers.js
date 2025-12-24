@@ -38,11 +38,39 @@ const createAvailability = async (req, res) => {
 };
 
 const getAvailability = async (req, res) => {
-  const userId = req.user.id;
-  const availability = await Availability.find({ userId });
-  res.json(availability);
+  try {
+    const userId = req.user.id;
+    const availability = await Availability.find({ userId });
+    res.json(availability);
+  } catch (error) {
+    res.status(500).json({ message: "Server error" });
+  }
 };
 
-const deleteAvailability = async (req, res) => {};
+const deleteAvailability = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const availabilityId = req.params.id;
+
+    const deletedAvailability = await Availability.findOneAndDelete({
+      _id: availabilityId,
+      userId,
+    });
+
+    if (!deletedAvailability) {
+      return res.status(404).json({
+        success: false,
+        message: "Availability not found or already deleted",
+      });
+    }
+
+    return res.json({
+      success: true,
+      message: "Availability deleted successfully",
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Server error" });
+  }
+};
 
 export { createAvailability, getAvailability, deleteAvailability };
