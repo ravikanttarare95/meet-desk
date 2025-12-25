@@ -10,7 +10,7 @@ const API_URL = import.meta.env.VITE_API_URL;
 
 function AdminBookings() {
   const token = localStorage.getItem("token");
-  const [date, setDate] = useState("");
+  const [date, setDate] = useState(new Date().toISOString().split("T")[0]);
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -54,8 +54,6 @@ function AdminBookings() {
     fetchBookings();
   }, [date]);
 
-  const today = new Date().toISOString().split("T")[0];
-
   return (
     <>
       <div className="max-w-3xl mx-auto p-4">
@@ -63,12 +61,12 @@ function AdminBookings() {
           <H3 headingTitle={" Bookings Management"} />
         </div>
 
-        <div className="bg-white rounded-xl border p-4 mb-6 flex flex-col sm:flex-row gap-4 items-end">
+        <div className="bg-white rounded-xl border p-4 mb-6 flex flex-row gap-4 items-end">
           <div>
             <Label labelTitle={"Filter by date"} />
             <Input
               type="date"
-              value={date || today}
+              value={date}
               onInputChange={(e) => {
                 setDate(e.target.value);
               }}
@@ -106,7 +104,7 @@ function AdminBookings() {
             return (
               <div
                 key={booking._id}
-                className="bg-white rounded-xl border hover:shadow-sm transition p-5 flex flex-col md:flex-row md:items-center md:justify-between gap-4"
+                className="relative bg-white rounded-xl border hover:shadow-sm transition p-5 flex flex-row items-center justify-between gap-4"
               >
                 <div className="space-y-1 ">
                   <p className="text-lg font-semibold text-gray-800">
@@ -129,25 +127,26 @@ function AdminBookings() {
                   )}
                 </div>
 
-                <div className="flex items-center gap-4">
-                  <span
-                    className={`text-xs font-semibold px-3 py-1 rounded-full ${
-                      isCancelled
-                        ? "bg-gray-200 text-gray-600"
-                        : "bg-green-100 text-green-700"
-                    }`}
-                  >
-                    {booking.status}
-                  </span>
-
+                <div className="absolute bottom-2 right-2 flex items-center gap-4">
                   {!isCancelled && (
                     <Button
                       btnVariant="secondary"
-                      btnTitle="Cancel"
+                      btnTitle="Cancel Booking"
+                      size="sm"
+                      customStyle="font-semibold!"
                       onBtnClick={() => cancelBooking(booking._id)}
                     />
                   )}
                 </div>
+                <span
+                  className={`absolute top-2 border right-2 text-xs font-semibold px-3 py-1 rounded-full ${
+                    isCancelled
+                      ? "bg-gray-200 text-gray-600"
+                      : "bg-green-100 text-green-700"
+                  }`}
+                >
+                  {booking.status}
+                </span>
               </div>
             );
           })}
