@@ -5,8 +5,6 @@ import Button from "../components/form_components/Button";
 function NotFound() {
   const navigate = useNavigate();
 
-  const [user] = useState(JSON.parse(localStorage.getItem("loggedInUser")));
-
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-violet-50 to-gray-100 px-4">
       <div className="bg-white border border-gray-200 rounded-2xl shadow-lg p-10 max-w-md w-full text-center space-y-6">
@@ -21,14 +19,10 @@ function NotFound() {
           </p>
         </div>
         <Button
-          btnTitle={"Go to Booking Page"}
+          btnTitle={"Go to Home Page"}
           btnVariant={"primary"}
           onBtnClick={() => {
-            if (user?.id) {
-              navigate(`/book/${user.id}`);
-            } else {
-              navigate("/");
-            }
+            navigate("/");
           }}
         />
       </div>

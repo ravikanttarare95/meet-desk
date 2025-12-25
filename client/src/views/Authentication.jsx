@@ -1,12 +1,21 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "./../components/form_components/Button.jsx";
 import AuthPanelContent from "./../components/auth_components/AuthPanelContent.jsx";
 import { authPanelContent } from "./../constants/authentication/authPanelContent.js";
 import LoginForm from "./../components/auth_components/LoginForm.jsx";
 import SignUpForm from "./../components/auth_components/SignUpForm.jsx";
+import { useNavigate } from "react-router";
 
 function Authentication() {
   const [activeView, setActiveView] = useState("login");
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const user = localStorage.getItem("loggedInUser");
+    if (user) {
+      navigate("/dashboard");
+    }
+  }, []);
 
   return (
     <div className="relative flex p-6 justify-center pt-20">
