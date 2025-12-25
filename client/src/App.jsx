@@ -24,22 +24,6 @@ function App() {
             </ProtectedRoute>
           }
         />
-        <Route
-          path="/admin/availability"
-          element={
-            <ProtectedRoute>
-              <AdminAvailability />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/admin/bookings"
-          element={
-            <ProtectedRoute>
-              <AdminBookings />
-            </ProtectedRoute>
-          }
-        />
         <Route path="*" element={<NotFound />} />
       </Routes>
       <Toaster />

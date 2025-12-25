@@ -33,7 +33,7 @@ function Book() {
         setAvailabilityList(response?.data?.data);
       }
     } catch (error) {
-      toast.error("Failed to fetch availability");
+      console.log("Failed to fetch availability");
     }
   };
 

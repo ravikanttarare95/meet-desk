@@ -18,7 +18,7 @@ function Authentication() {
   }, []);
 
   return (
-    <div className="relative flex p-6 justify-center pt-20">
+    <div className="relative flex p-6 justify-center items-center min-h-screen">
       <div className="flex rounded-3xl shadow-2xl overflow-hidden bg-white max-w-3xl w-full">
         <div className="hidden md:flex w-2/3 bg-gradient-to-t from-violet-400 to-rose-400 text-white p-8 items-center justify-center">
           <div className="space-y-4 text-center">
@@ -29,7 +29,15 @@ function Authentication() {
           </div>
         </div>
 
-        <div className=" p-8 space-y-6 w-full">
+        <div className="pt-3 p-8 space-y-6 w-full">
+          <h3
+            className="text-xl font-bold text-violet-600 mb-5 cursor-pointer w-fit"
+            onClick={() => {
+              navigate("/");
+            }}
+          >
+            MeetDesk
+          </h3>
           <div className="flex gap-4 justify-center">
             <Button
               type="button"

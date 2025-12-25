@@ -41,12 +41,14 @@ const getAvailability = async (req, res) => {
   try {
     const userId = req.user.id;
     const availability = await Availability.find({ userId });
-    res.json({
-      success: true,
-      data: availability,
-    });
+    if (availability) {
+      return res.json({
+        success: true,
+        data: availability,
+      });
+    }
   } catch (error) {
-    res.status(500).json({ message: "Server error" });
+    return res.status(500).json({ message: "Server error" });
   }
 };
 
