@@ -4,7 +4,7 @@ import toast from "react-hot-toast";
 import Input from "./../components/form_components/Input.jsx";
 import Label from "./../components/form_components/Label.jsx";
 import Button from "./../components/form_components/Button.jsx";
-
+import { jwtDecode } from "jwt-decode";
 import H3 from "./../components/H3.jsx";
 
 const API_URL = import.meta.env.VITE_API_URL;
@@ -22,12 +22,17 @@ function AdminAvailability() {
   const [availabilityList, setAvailabilityList] = useState([]);
 
   const fetchAvailability = async () => {
+    const decoded = jwtDecode(token);
+
     try {
-      const response = await axios.get(`${API_URL}/availability`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await axios.get(
+        `${API_URL}/availability?userId=${decoded.id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       if (response?.data?.data) {
         setAvailabilityList(response?.data?.data);
       }

@@ -9,7 +9,7 @@ import {
 const router = express.Router();
 
 router.post("/", jwtCheck, createAvailability);
-router.get("/", jwtCheck, getAvailability);
+router.get("/", getAvailability);
 router.delete("/:id", jwtCheck, deleteAvailability);
 
 export default router;

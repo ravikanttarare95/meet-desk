@@ -24,11 +24,9 @@ function Book() {
 
   const fetchAvailability = async () => {
     try {
-      const response = await axios.get(`${API_URL}/availability`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
+      const response = await axios.get(
+        `${API_URL}/availability?userId=${userId}`
+      );
       if (response?.data?.data) {
         setAvailabilityList(response?.data?.data);
       }

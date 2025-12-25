@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router";
 import Button from "./../components/form_components/Button.jsx";
 import { useNavigate } from "react-router";
 import HowItWork from "./../home-data/howItWorksSteps.js";
@@ -12,7 +11,7 @@ import Footer from "./../components/Footer.jsx";
 import axios from "axios";
 
 function Home() {
-  const [user] = useState(JSON.parse(localStorage.getItem("loggedInUser")));
+  
   const navigate = useNavigate();
 
   const chechHealth = async () => {
@@ -47,13 +46,6 @@ function Home() {
               btnTitle="Get Started Free"
               onBtnClick={() => {
                 navigate("/authenticate");
-              }}
-            />
-            <Button
-              btnVariant="secondary"
-              btnTitle="Meet Now"
-              onBtnClick={() => {
-                navigate(`/book/${user?.id}`);
               }}
             />
           </div>
