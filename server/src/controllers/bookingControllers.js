@@ -1,49 +1,5 @@
 import Availability from "./../models/Availability.js";
 import Booking from "./../models/Booking.js";
-import generateSlots from "./../utils/slotGenerator.js";
-
-const getAvailableSlots = async (req, res) => {
-  try {
-    const { userId, date } = req.query;
-
-    if (!userId || !date) {
-      return res.status(400).json({ message: "userId and date are required" });
-    }
-
-    const availability = await Availability.findOne({
-      userId,
-      date,
-      isBlocked: false,
-    });
-
-    if (!availability) {
-      return res.json([]);
-    }
-
-    const allSlots = generateSlots(
-      availability.startTime,
-      availability.endTime,
-      availability.slotDuration
-    );
-
-    const bookings = await Booking.find({
-      userId,
-      date,
-      status: "BOOKED",
-    });
-
-    const availableSlots = allSlots.filter((slot) => {
-      return !bookings.some(
-        (booking) =>
-          booking.startTime === slot.start && booking.endTime === slot.end
-      );
-    });
-
-    res.json(availableSlots);
-  } catch (error) {
-    res.status(500).json({ message: "Server error" });
-  }
-};
 
 const createBooking = async (req, res) => {
   try {
@@ -53,6 +9,25 @@ const createBooking = async (req, res) => {
     if (!userId || !date || !startTime || !endTime || !userName || !userEmail) {
       return res.status(400).json({
         message: "Missing required booking fields",
+      });
+    }
+
+    const userNameRegex = /^[A-Z][a-zA-Z'-]{1,49}(?: [A-Z][a-zA-Z'-]{1,49})*$/;
+
+    const userEmailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+    if (!userNameRegex.test(userName)) {
+      return res.status(400).json({
+        success: false,
+        message:
+          "Please enter your full name using only letters, spaces, apostrophes, or hyphens, with each name starting with a capital letter and between 2 and 50 characters long",
+      });
+    }
+
+    if (!userEmailRegex.test(userEmail)) {
+      return res.status(400).json({
+        success: false,
+        message: "Please enter a valid email address (user@xyz.com)",
       });
     }
 
@@ -82,20 +57,6 @@ const createBooking = async (req, res) => {
       });
     }
 
-    // const slots = generateSlots(
-    //   availability.startTime,
-    //   availability.endTime,
-    //   availability.slotDuration
-    // );
-
-    // const isValidSlot = slots.some(
-    //   (slot) => slot.start === startTime && slot.end === endTime
-    // );
-
-    // if (!isValidSlot) {
-    //   return res.status(400).json({ message: "Invalid slot" });
-    // }
-
     const booking = await Booking.create({
       userId,
       date,
@@ -115,4 +76,4 @@ const createBooking = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
-export { getAvailableSlots, createBooking };
+export { createBooking };

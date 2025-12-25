@@ -41,7 +41,10 @@ const getAvailability = async (req, res) => {
   try {
     const userId = req.user.id;
     const availability = await Availability.find({ userId });
-    res.json(availability);
+    res.json({
+      success: true,
+      data: availability,
+    });
   } catch (error) {
     res.status(500).json({ message: "Server error" });
   }

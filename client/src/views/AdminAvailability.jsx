@@ -21,13 +21,14 @@ function AdminAvailability() {
 
   const fetchAvailability = async () => {
     try {
-      const res = await axios.get(`${API_URL}/availability`, {
+      const response = await axios.get(`${API_URL}/availability`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-
-      setAvailabilityList(res.data);
+      if (response?.data?.data) {
+        setAvailabilityList(response?.data?.data);
+      }
     } catch (error) {
       toast.error("Failed to fetch availability");
     }
@@ -176,9 +177,7 @@ function AdminAvailability() {
               id={"end-time"}
               type="time"
               value={form.endTime}
-              onInputChange={(e) =>
-                setForm({ ...form, endTime: e.target.value })
-              }
+              isDisabled={true}
             />
           </div>
         </div>

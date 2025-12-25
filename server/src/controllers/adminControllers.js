@@ -8,7 +8,7 @@ const getAdminBookings = async (req, res) => {
     const userId = req.user.id;
     const { date } = req.query;
 
-    const bookings = await Booking.find({ userId }).sort({
+    const bookings = await Booking.find({ userId, date }).sort({
       date: 1,
       startTime: 1,
     });

@@ -11,6 +11,7 @@ const Input = ({
   customStyle,
   min,
   max,
+  isDisabled,
 }) => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const inputType = type === "password" && isPasswordVisible ? "text" : type;
@@ -27,6 +28,7 @@ const Input = ({
         onChange={onInputChange}
         min={min}
         max={max}
+        disabled={isDisabled}
       />
       {type === "password" && (
         <div
