@@ -3,16 +3,13 @@ import axios from "axios";
 import Button from "./../components/form_components/Button.jsx";
 import Input from "./../components/form_components/Input.jsx";
 import toast from "react-hot-toast";
-import Navbar from "./../components/Navbar.jsx";
-import Footer from "./../components/Footer.jsx";
-import H1 from "../components/H1.jsx";
-import Label from "../components/form_components/Label.jsx";
+import H3 from "./../components/H3.jsx";
+import Label from "./../components/form_components/Label.jsx";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
 function AdminBookings() {
   const token = localStorage.getItem("token");
-
   const [date, setDate] = useState("");
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -61,14 +58,9 @@ function AdminBookings() {
 
   return (
     <>
-      <Navbar />
-
       <div className="max-w-3xl mx-auto p-4">
         <div className="mb-6">
-          <H1 headingTitle={" Bookings Management"} />
-          <p className="text-gray-500 text-sm mt-2">
-            View and manage all appointment bookings
-          </p>
+          <H3 headingTitle={" Bookings Management"} />
         </div>
 
         <div className="bg-white rounded-xl border p-4 mb-6 flex flex-col sm:flex-row gap-4 items-end">
@@ -90,13 +82,20 @@ function AdminBookings() {
 
         {!loading && bookings.length === 0 && (
           <p className="text-center text-gray-500 mt-10">
+            <span className="mx-auto mb-4 w-12 h-12 rounded-full bg-violet-100 flex items-center justify-center text-violet-600 text-2xl">
+              📅
+            </span>
+
             {date
-              ? `No bookings on ${new Intl.DateTimeFormat("en-US", {
-                  month: "long",
-                  day: "numeric",
-                  year: "numeric",
-                }).format(new Date(date))}`
-              : "No bookings today"}
+              ? `  There are no bookings scheduled for ${new Intl.DateTimeFormat(
+                  "en-US",
+                  {
+                    month: "long",
+                    day: "numeric",
+                    year: "numeric",
+                  }
+                ).format(new Date(date))}`
+              : "You don’t have any bookings today."}
           </p>
         )}
 
@@ -154,7 +153,6 @@ function AdminBookings() {
           })}
         </div>
       </div>
-      <Footer />
     </>
   );
 }

@@ -19,7 +19,7 @@ function Navbar() {
         }  mx-auto px-4 h-16 flex items-center justify-between`}
       >
         <Link to="/" className="flex items-center gap-2">
-          <span className="text-xl font-bold text-violet-600">MeetDesk</span>4
+          <span className="text-xl font-bold text-violet-600">MeetDesk</span>
         </Link>
 
         <div className="hidden md:flex items-center gap-6">

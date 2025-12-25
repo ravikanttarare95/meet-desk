@@ -4,9 +4,8 @@ import toast from "react-hot-toast";
 import Input from "./../components/form_components/Input.jsx";
 import Label from "./../components/form_components/Label.jsx";
 import Button from "./../components/form_components/Button.jsx";
-import Navbar from "./../components/Navbar.jsx";
-import Footer from "./../components/Footer.jsx";
-import H1 from "./../components/H1.jsx";
+
+import H3 from "./../components/H3.jsx";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -120,10 +119,8 @@ function AdminAvailability() {
 
   return (
     <>
-      <Navbar />
-
       <div className="max-w-3xl p-4 mx-auto pt-4 space-y-8 min-h-screen">
-        <H1 headingTitle={"Admin Availability"} />
+        <H3 headingTitle={"Admin Availability"} />
 
         <div className="bg-gray-50 border border-gray-400 p-6 rounded-xl space-y-4 shadow-sm">
           <h2 className="text-lg font-semibold text-gray-800">
@@ -241,7 +238,6 @@ function AdminAvailability() {
           ))}
         </div>
       </div>
-      <Footer />
     </>
   );
 }
