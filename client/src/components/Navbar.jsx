@@ -13,9 +13,13 @@ function Navbar() {
 
   return (
     <nav className="sticky top-0 z-50  bg-white/80 backdrop-blur border-b border-gray-200">
-      <div className="max-w-3xl  mx-auto px-4 h-16 flex items-center justify-between">
+      <div
+        className={`${
+          window.location.pathname === "/" ? "max-w-7xl" : "max-w-3xl"
+        }  mx-auto px-4 h-16 flex items-center justify-between`}
+      >
         <Link to="/" className="flex items-center gap-2">
-          <span className="text-xl font-bold text-violet-500">MeetDesk</span>
+          <span className="text-xl font-bold text-violet-600">MeetDesk</span>4
         </Link>
 
         <div className="hidden md:flex items-center gap-6">

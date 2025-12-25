@@ -6,6 +6,7 @@ import Button from "./../components/form_components/Button.jsx";
 import toast from "react-hot-toast";
 import H1 from "../components/H1.jsx";
 import Navbar from "./../components/Navbar.jsx";
+import Footer from "./../components/Footer.jsx";
 
 const API_URL = import.meta.env.VITE_API_URL;
 function Book() {
@@ -74,7 +75,7 @@ function Book() {
   return (
     <>
       <Navbar />
-      <div className="max-w-3xl mx-auto mt-12 px-4 space-y-8 min-h-screen">
+      <div className="max-w-3xl mx-auto p-4 space-y-8 pb-12">
         <H1 headingTitle={"Book an Appointment"} />
 
         <div className="space-y-4">
@@ -158,6 +159,7 @@ function Book() {
           />
         </div>
       </div>
+      <Footer />
     </>
   );
 }

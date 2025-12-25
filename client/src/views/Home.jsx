@@ -8,6 +8,7 @@ import HomeFeaturesCard from "./../components/homeComponents/HomeFeaturesCard.js
 import HowItWorkCard from "./../components/homeComponents/HowItWorkCard.jsx";
 import H2 from "./../components/H2.jsx";
 import Navbar from "./../components/Navbar.jsx";
+import Footer from "./../components/Footer.jsx";
 
 function Home() {
   const [user] = useState(JSON.parse(localStorage.getItem("loggedInUser")));
@@ -48,7 +49,7 @@ function Home() {
 
         <div className="hidden md:flex justify-center">
           <img
-            src="https://ik.imagekit.io/vby7pddwy/ChatGPT_Image_Dec_25__2025__01_17_13_PM_la8ZCagt2.png?updatedAt=1766648871383"
+            src="https://ik.imagekit.io/vby7pddwy/book-home__v9k2BVJc.png?updatedAt=1766660638406"
             alt="Booking illustration"
             className="w-full max-w-md"
           />
@@ -86,6 +87,7 @@ function Home() {
           </div>
         </div>
       </section>
+      <Footer />
     </div>
   );
 }

@@ -4,6 +4,7 @@ import Button from "./../components/form_components/Button.jsx";
 import Input from "./../components/form_components/Input.jsx";
 import toast from "react-hot-toast";
 import Navbar from "./../components/Navbar.jsx";
+import Footer from "./../components/Footer.jsx";
 import H1 from "../components/H1.jsx";
 import Label from "../components/form_components/Label.jsx";
 
@@ -153,6 +154,7 @@ function AdminBookings() {
           })}
         </div>
       </div>
+      <Footer />
     </>
   );
 }

@@ -5,6 +5,7 @@ import Input from "./../components/form_components/Input.jsx";
 import Label from "./../components/form_components/Label.jsx";
 import Button from "./../components/form_components/Button.jsx";
 import Navbar from "./../components/Navbar.jsx";
+import Footer from "./../components/Footer.jsx";
 import H1 from "./../components/H1.jsx";
 
 const API_URL = import.meta.env.VITE_API_URL;
@@ -240,6 +241,7 @@ function AdminAvailability() {
           ))}
         </div>
       </div>
+      <Footer />
     </>
   );
 }
