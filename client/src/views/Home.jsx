@@ -9,10 +9,22 @@ import HowItWorkCard from "./../components/homeComponents/HowItWorkCard.jsx";
 import H2 from "./../components/H2.jsx";
 import Navbar from "./../components/Navbar.jsx";
 import Footer from "./../components/Footer.jsx";
+import axios from "axios";
 
 function Home() {
   const [user] = useState(JSON.parse(localStorage.getItem("loggedInUser")));
   const navigate = useNavigate();
+
+  const chechHealth = async () => {
+    const response = await axios.get(`${import.meta.env.VITE_API_URL}/`);
+    if (response?.data) {
+      console.log(response?.data?.message);
+    }
+  };
+
+  useEffect(() => {
+    chechHealth();
+  }, []);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-violet-50 to-white">
