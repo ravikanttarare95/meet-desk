@@ -7,6 +7,7 @@ import WhyFeatures from "./../home-data/homeFeatures.js";
 import HomeFeaturesCard from "./../components/homeComponents/HomeFeaturesCard.jsx";
 import HowItWorkCard from "./../components/homeComponents/HowItWorkCard.jsx";
 import H2 from "./../components/H2.jsx";
+import Navbar from "./../components/Navbar.jsx";
 
 function Home() {
   const [user] = useState(JSON.parse(localStorage.getItem("loggedInUser")));
@@ -14,6 +15,7 @@ function Home() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-violet-50 to-white">
+      <Navbar />
       <section className="max-w-6xl mx-auto px-6 pt-24 pb-16 grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
         <div className="space-y-6">
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 leading-tight">
@@ -36,7 +38,7 @@ function Home() {
             />
             <Button
               btnVariant="secondary"
-              btnTitle="Share Booking Link"
+              btnTitle="Meet Now"
               onBtnClick={() => {
                 navigate(`/book/${user?.id}`);
               }}

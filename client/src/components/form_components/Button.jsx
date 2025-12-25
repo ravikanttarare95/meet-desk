@@ -20,7 +20,7 @@ function Button({
     size === "lg"
       ? "text-lg sm:text-xl px-8 py-3 rounded-lg shadow-lg font-bold "
       : size === "sm"
-      ? "text-sm sm:text-base px-3 py-1.5 rounded-md shadow-sm font-light"
+      ? "text-sm sm:text-base px-4 py-1.5 rounded-md shadow-sm font-light"
       : "text-base sm:text-lg px-5 py-2.5 rounded-lg shadow-md font-medium";
 
   return (
