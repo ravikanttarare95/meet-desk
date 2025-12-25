@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import Input from "./../components/form_components/Input.jsx";
+import Label from "./../components/form_components/Label.jsx";
 import Button from "./../components/form_components/Button.jsx";
 
 const API_URL = import.meta.env.VITE_API_URL;
@@ -87,9 +88,31 @@ function AdminAvailability() {
     }
   };
 
+  const calculateEndTime = (startTime, slotDuration) => {
+    if (!startTime || !slotDuration) return "";
+
+    const timeParts = startTime.split(":");
+    const hours = Number(timeParts[0]);
+    const minutes = Number(timeParts[1]);
+
+    const startTimeInMinutes = hours * 60 + minutes;
+
+    const endTimeInMinutes = startTimeInMinutes + slotDuration;
+
+    const endHours = Math.floor(endTimeInMinutes / 60);
+    const endMinutes = endTimeInMinutes % 60;
+
+    const formattedHours = String(endHours).padStart(2, "0");
+    const formattedMinutes = String(endMinutes).padStart(2, "0");
+
+    return `${formattedHours}:${formattedMinutes}`;
+  };
+
   useEffect(() => {
     fetchAvailability();
   }, []);
+
+  const today = new Date().toISOString().split("T")[0];
 
   return (
     <div className="max-w-2xl mx-auto pt-12 space-y-8 min-h-screen">
@@ -101,35 +124,63 @@ function AdminAvailability() {
         </h2>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <Input
-            type="date"
-            value={form.date}
-            onInputChange={(e) => setForm({ ...form, date: e.target.value })}
-          />
+          <div>
+            <Label labelTitle={"Enter Date"} htmlFor={"input-date"} />
+            <Input
+              id={"input-date"}
+              type="date"
+              value={form.date}
+              min={today}
+              onInputChange={(e) => setForm({ ...form, date: e.target.value })}
+            />
+          </div>
 
-          <Input
-            type="number"
-            value={form.slotDuration}
-            onInputChange={(e) =>
-              setForm({ ...form, slotDuration: Number(e.target.value) })
-            }
-            placeholder="Slot duration (minutes)"
-            min="5"
-          />
+          <div>
+            <Label labelTitle={"Slot Duration (min)"} htmlFor={"input-slots"} />
+            <Input
+              id={"input-slots"}
+              type="number"
+              value={form.slotDuration}
+              onInputChange={(e) => {
+                const slotDuration = Number(e.target.value);
+                const endTime = calculateEndTime(form.startTime, slotDuration);
 
-          <Input
-            type="time"
-            value={form.startTime}
-            onInputChange={(e) =>
-              setForm({ ...form, startTime: e.target.value })
-            }
-          />
+                setForm({
+                  ...form,
+                  slotDuration,
+                  endTime,
+                });
+              }}
+              placeholder="Slot duration (minutes)"
+              min="5"
+            />
+          </div>
 
-          <Input
-            type="time"
-            value={form.endTime}
-            onInputChange={(e) => setForm({ ...form, endTime: e.target.value })}
-          />
+          <div>
+            <Label labelTitle={"Start Time"} htmlFor={"start-time"} />
+            <Input
+              id={"start-time"}
+              type="time"
+              value={form.startTime}
+              onInputChange={(e) => {
+                const startTime = e.target.value;
+                const endTime = calculateEndTime(startTime, form.slotDuration);
+                setForm({ ...form, startTime, endTime });
+              }}
+            />
+          </div>
+
+          <div>
+            <Label labelTitle={"End Time"} htmlFor={"end-time"} />
+            <Input
+              id={"end-time"}
+              type="time"
+              value={form.endTime}
+              onInputChange={(e) =>
+                setForm({ ...form, endTime: e.target.value })
+              }
+            />
+          </div>
         </div>
 
         <Button

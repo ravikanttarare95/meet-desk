@@ -90,7 +90,7 @@ function AdminBookings() {
 
       <div className="grid gap-4">
         {bookings.map((booking) => {
-          const isCancelled = booking.status === "cancelled";
+          const isCancelled = booking.status === "CANCELLED";
 
           return (
             <div

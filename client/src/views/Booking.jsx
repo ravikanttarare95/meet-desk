@@ -24,7 +24,7 @@ function Book() {
         params: { userId, date },
       });
       if (response?.data) {
-        setSlots((prev) => [...prev, response?.data]);
+        setSlots(response?.data);
         console.log(response?.data);
       }
     } catch {
