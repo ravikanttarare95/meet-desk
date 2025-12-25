@@ -48,7 +48,7 @@ function Navbar() {
               size="sm"
               btnTitle="Login"
               onBtnClick={() => {
-                navigate("authenticate");
+                navigate("/authenticate");
               }}
               customStyle="font-semibold!"
             />

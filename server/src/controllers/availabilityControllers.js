@@ -41,7 +41,7 @@ const getAvailability = async (req, res) => {
   const { userId } = req.query;
 
   try {
-    const availability = await Availability.find({ userId });
+    const availability = await Availability.find({ userId }).sort({ date: 1 });
     if (availability) {
       return res.json({
         success: true,

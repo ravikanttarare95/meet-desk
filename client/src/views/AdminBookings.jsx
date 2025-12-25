@@ -139,7 +139,7 @@ function AdminBookings() {
                   )}
                 </div>
                 <span
-                  className={`absolute top-2 border right-2 text-xs font-semibold px-3 py-1 rounded-full ${
+                  className={`absolute top-2 border right-2 text-xs font-semibold px-3 py-1 rounded ${
                     isCancelled
                       ? "bg-gray-200 text-gray-600"
                       : "bg-green-100 text-green-700"
